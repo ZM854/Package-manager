@@ -66,3 +66,60 @@ Error: Invalid repository file path in test mode.
 ```
 
 ---
+
+# Визуализатор графа зависимостей — Этап 2
+
+## 1. Общее описание
+
+На этом этапе реализована основная логика сбора данных о зависимостях пакета из NuGet-репозитория.
+Приложение подключается к публичному package index `https://api.nuget.org/v3/index.json`, извлекает информацию о пакете и выводит его прямые зависимости.
+
+---
+
+## 2. Параметры запуска
+
+Остались без изменений
+
+## 3. Запуск программы
+
+### Пример вызова для пакета Newtonsoft.Json:
+
+```
+python main.py -p Newtonsoft.Json -r https://api.nuget.org/v3/index.json -m remote
+```
+
+### Пример вывода
+
+```
+Analyzing package: Newtonsoft.Json
+Mode: remote
+Repository: https://api.nuget.org/v3/index.json
+----------------------------------------
+Connecting to NuGet repository: https://api.nuget.org/v3/index.json
+Fetching package data: https://api.nuget.org/v3/registration5-semver1/newtonsoft.json/index.json
+Direct dependencies:
+- Microsoft.CSharp
+- NETStandard.Library
+- System.ComponentModel.TypeConverter
+- System.Runtime.Serialization.Primitives
+- Microsoft.CSharp
+- NETStandard.Library
+- System.ComponentModel.TypeConverter
+- System.Runtime.Serialization.Formatters
+- System.Runtime.Serialization.Primitives
+- System.Xml.XmlDocument
+```
+
+## 4. Пример ошибок
+
+**Некорректный URL (remote):**
+
+```
+Error: Invalid repository URL in remote mode.
+```
+
+**Ошибка при получении данных:**
+
+```
+Error fetching JSON from https://api.nuget.or/v3/index.json: <urlopen error [Errno 11001] getaddrinfo failed>
+```
